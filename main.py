@@ -5,6 +5,8 @@ import example
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 # ALPHABET = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
+frequency = [[0 for i in range(26)]]
+
 def decrypt(key, cipher_text):
     plain_text = ""
     for i in range (0, len(cipher_text)):
@@ -21,7 +23,11 @@ def decrypt(key, cipher_text):
         if character.isalpha(): plain_text += character
         else: return
     if "THE" in plain_text and "AND" in plain_text:
-        print(plain_text)
+        for letter in range(len(key)):
+            if letter >= len(frequency):
+                frequency.append([0 for i in range(26)])
+            frequency[letter][ord(key[letter]) - ord('A')] += 1
+        # print(plain_text)
         print(key)
 
 def printAllKLength(set, k):
@@ -46,7 +52,10 @@ def printAllKLengthRec(set, prefix, n, k):
     # print prefix
     if (k == 0) :
         # print(prefix)
-        if prefix == "ALICE": print("ALICE FOUND")
+        # if prefix == "ALICE":
+        #     print("ALICE FOUND")
+        #     decrypt(prefix, example.cipher_text.replace(" ", ""))
+        #     return
         decrypt(prefix, example.cipher_text.replace(" ", ""))
         return
  
@@ -65,14 +74,17 @@ def printAllKLengthRec(set, prefix, n, k):
 def main():
     # print("Hello World!")
     # print(example.cipher_text)
-    cipher_text = example.cipher_text
-    cipher_text = cipher_text.replace(" ", "")
+    # cipher_text = example.cipher_text
+    # cipher_text = cipher_text.replace(" ", "")
     # print(cipher_text)
 
     # decrypt("ALICE", cipher_text)
     # keyGuesser(3)
-    # for i in range(5): printAllKLength(ALPHABET, i+1)
-    printAllKLength(ALPHABET, 5)
+    for i in range(5): printAllKLength(ALPHABET, i+1)
+    # printAllKLength(ALPHABET, 5)
+    decrypt("ALICE", example.cipher_text.replace(" ", ""))
+    for i in range(len(frequency)):
+        print(frequency[i])
 
 if __name__ == "__main__":
     main()
