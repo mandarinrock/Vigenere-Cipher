@@ -7,6 +7,17 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 frequency = [[0 for i in range(26)]]
 
+def printGuess():
+    bestGuess = ""
+    for i in range(len(frequency)):
+        print(frequency[i])
+        max = 0
+        for j in range(len(frequency[i])):
+            if frequency[i][j] > max:
+                max = frequency[i][j]
+        bestGuess += ALPHABET[j]
+    print(bestGuess)
+
 def decrypt(key, cipher_text):
     plain_text = ""
     for i in range (0, len(cipher_text)):
@@ -22,13 +33,14 @@ def decrypt(key, cipher_text):
         #     print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A')), end="")
         if character.isalpha(): plain_text += character
         else: return
-    if "THE" in plain_text and "AND" in plain_text:
+    if "THE" in plain_text and "AND" in plain_text and "OF" in plain_text and "TO" in plain_text:
         for letter in range(len(key)):
             if letter >= len(frequency):
                 frequency.append([0 for i in range(26)])
             frequency[letter][ord(key[letter]) - ord('A')] += 1
+        printGuess()
         # print(plain_text)
-        print(key)
+        # print(key)
 
 def printAllKLength(set, k):
  
@@ -83,14 +95,15 @@ def main():
     for i in range(5): printAllKLength(ALPHABET, i+1)
     # printAllKLength(ALPHABET, 5)
     decrypt("ALICE", example.cipher_text.replace(" ", ""))
-    bestGuess = ""
-    for i in range(len(frequency)):
-        print(frequency[i])
-        max = 0
-        for j in range(len(frequency[i])):
-            if frequency[i][j] > max:
-                max = frequency[i][j]
-        bestGuess += ALPHABET[j]
+    # bestGuess = ""
+    # for i in range(len(frequency)):
+    #     print(frequency[i])
+    #     max = 0
+    #     for j in range(len(frequency[i])):
+    #         if frequency[i][j] > max:
+    #             max = frequency[i][j]
+    #     bestGuess += ALPHABET[j]
+    # print(bestGuess)
 
 if __name__ == "__main__":
     main()
