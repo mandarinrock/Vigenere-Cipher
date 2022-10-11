@@ -10,7 +10,7 @@ frequency = [[0 for i in range(26)]]
 def printGuess():
     bestGuess = ""
     for i in range(len(frequency)):
-        print(frequency[i])
+        # print(frequency[i])
         max = 0
         for j in range(len(frequency[i])):
             if frequency[i][j] > max:
@@ -19,6 +19,9 @@ def printGuess():
     print("================")
     print(bestGuess)
     print("================")
+    f = open("guess.txt", "a")
+    f.write(bestGuess)
+    f.close()
 
 def decrypt(key, cipher_text):
     plain_text = ""
