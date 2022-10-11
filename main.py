@@ -1,5 +1,6 @@
 from curses.ascii import isalpha
 from pydoc import plain
+from re import X
 import example
 
 ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -7,26 +8,9 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 frequency = [[0 for i in range(26)]]
 
-def printGuess(plain_text):
-    bestGuess = ""
-    for i in range(len(frequency)):
-        # print(frequency[i])
-        max = 0
-        for j in range(len(frequency[i])):
-            if frequency[i][j] > max:
-                max = frequency[i][j]
-                bestLetter = j
-        bestGuess += ALPHABET[bestLetter]
-    # print("================")
-    # print(bestGuess)
-    # print("================")
-    f = open("guess.txt", "w")
-    f.write("Key: " + bestGuess + "\nPlain Text: " + getPlainText(bestGuess, example.cipher_text.replace(" ", "")))
-    print("Key: " + bestGuess + "\nPlain Text: " + getPlainText(bestGuess, example.cipher_text.replace(" ", "")))
-    # f.write("\n")
-    f.close()
+x = "awesome"
 
-def getPlainText(key, cipher_text):
+def getPlainText(cipher_text, key):
     plain_text = ""
     for i in range (0, len(cipher_text)):
         if ord(key[i % len(key)]) <= ord(cipher_text[i]):
@@ -44,26 +28,31 @@ def getPlainText(key, cipher_text):
     return plain_text
 
 def decrypt(key, cipher_text):
-    plain_text = ""
-    for i in range (0, len(cipher_text)):
-        if ord(key[i % len(key)]) <= ord(cipher_text[i]):
-            # print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A')), end="")
-            character = chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A'))
-            # plain_text += chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A'))
-        elif ord(key[i % len(key)]) > ord(cipher_text[i]):
-            # print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1), end="")
-            # plain_text += chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1)
-            character = chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1)
-        # else:
-        #     print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A')), end="")
-        if character.isalpha(): plain_text += character
-        else: return
+    global x
+    plain_text = getPlainText(cipher_text, key)
     if "THE" in plain_text and "AND" in plain_text and "OF" in plain_text and "TO" in plain_text:
         for letter in range(len(key)):
             if letter >= len(frequency):
                 frequency.append([0 for i in range(26)])
             frequency[letter][ord(key[letter]) - ord('A')] += 1
-        printGuess(plain_text)
+        # printGuess()
+        bestGuess = ""
+        for i in range(len(frequency)):
+            # print(frequency[i])
+            max = 0
+            for j in range(len(frequency[i])):
+                if frequency[i][j] > max:
+                    max = frequency[i][j]
+                    bestLetter = j
+            bestGuess += ALPHABET[bestLetter]
+        if bestGuess != x:
+            f = open("guess.txt", "w")
+            f.write("Key: " + bestGuess + "\nPlain Text: " + plain_text)
+            print("Key: " + bestGuess + "\nPlain Text: " + plain_text)
+            # f.write("\n")
+            f.close()
+            
+            x = bestGuess
         # print(plain_text)
         # print(key)
 
