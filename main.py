@@ -6,7 +6,7 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 frequency = [[0 for i in range(26)]]
 savedBest = ""
 
-def getPlainText(cipher_text, key):
+def getPlainText(key):
     plain_text = ""
     for i in range (0, len(cipher_text)):
         if ord(key[i % len(key)]) <= ord(cipher_text[i]):
@@ -19,7 +19,7 @@ def getPlainText(cipher_text, key):
 
 def decrypt(key, cipher_text):
     global savedBest
-    plain_text = getPlainText(cipher_text, key)
+    plain_text = getPlainText(key)
     if "THE" in plain_text and "AND" in plain_text and "OF" in plain_text and "TO" in plain_text:
         for letter in range(len(key)):
             if letter >= len(frequency):
@@ -34,13 +34,12 @@ def decrypt(key, cipher_text):
                     bestLetter = j
             bestGuess += ALPHABET[bestLetter]
         if bestGuess != savedBest:
-            output = "Key: " + bestGuess + "\nPlain_text: " + getPlainText(cipher_text, bestGuess)
+            output = "Key: " + bestGuess + "\nPlain_text: " + getPlainText(bestGuess)
             f = open("guess.txt", "w")
             f.write(output)
             print(output)
             f.close()
             savedBest = bestGuess
-
 
 def crackKey(combination, length):
     if length == 0:
