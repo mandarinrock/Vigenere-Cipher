@@ -16,7 +16,9 @@ def printGuess():
             if frequency[i][j] > max:
                 max = frequency[i][j]
         bestGuess += ALPHABET[j]
+    print("================")
     print(bestGuess)
+    print("================")
 
 def decrypt(key, cipher_text):
     plain_text = ""
@@ -63,7 +65,7 @@ def printAllKLengthRec(set, prefix, n, k):
     # Base case: k is 0,
     # print prefix
     if (k == 0) :
-        # print(prefix)
+        print(prefix)
         # if prefix == "ALICE":
         #     print("ALICE FOUND")
         #     decrypt(prefix, example.cipher_text.replace(" ", ""))
