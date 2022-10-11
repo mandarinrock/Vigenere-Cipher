@@ -83,8 +83,14 @@ def main():
     for i in range(5): printAllKLength(ALPHABET, i+1)
     # printAllKLength(ALPHABET, 5)
     decrypt("ALICE", example.cipher_text.replace(" ", ""))
+    bestGuess = ""
     for i in range(len(frequency)):
         print(frequency[i])
+        max = 0
+        for j in range(len(frequency[i])):
+            if frequency[i][j] > max:
+                max = frequency[i][j]
+        bestGuess += ALPHABET[j]
 
 if __name__ == "__main__":
     main()
