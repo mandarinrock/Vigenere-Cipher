@@ -48,7 +48,7 @@ def crackKey(combination, length):
     for i in range(len(ALPHABET)): crackKey(combination + ALPHABET[i], length - 1)
 
 def main():
-    for i in range(6): crackKey("", i+1)
+    for i in range(len(cipher_text)): crackKey("", i+1)
 
 if __name__ == "__main__":
     main()
