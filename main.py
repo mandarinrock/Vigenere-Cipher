@@ -46,7 +46,8 @@ def printAllKLengthRec(set, prefix, n, k):
     # print prefix
     if (k == 0) :
         # print(prefix)
-        decrypt(prefix, example.cipher_text)
+        if prefix == "ALICE": print("ALICE FOUND")
+        decrypt(prefix, example.cipher_text.replace(" ", ""))
         return
  
     # One by one add all characters 
@@ -70,7 +71,8 @@ def main():
 
     # decrypt("ALICE", cipher_text)
     # keyGuesser(3)
-    for i in range(1, 10): printAllKLength(ALPHABET, i)
+    # for i in range(5): printAllKLength(ALPHABET, i+1)
+    printAllKLength(ALPHABET, 5)
 
 if __name__ == "__main__":
     main()
