@@ -7,7 +7,7 @@ ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 frequency = [[0 for i in range(26)]]
 
-def printGuess():
+def printGuess(plain_text):
     bestGuess = ""
     for i in range(len(frequency)):
         # print(frequency[i])
@@ -15,13 +15,33 @@ def printGuess():
         for j in range(len(frequency[i])):
             if frequency[i][j] > max:
                 max = frequency[i][j]
-        bestGuess += ALPHABET[j]
-    print("================")
-    print(bestGuess)
-    print("================")
-    f = open("guess.txt", "a")
-    f.write(bestGuess)
+                bestLetter = j
+        bestGuess += ALPHABET[bestLetter]
+    # print("================")
+    # print(bestGuess)
+    # print("================")
+    f = open("guess.txt", "w")
+    f.write("Key: " + bestGuess + "\nPlain Text: " + getPlainText(bestGuess, example.cipher_text.replace(" ", "")))
+    print("Key: " + bestGuess + "\nPlain Text: " + getPlainText(bestGuess, example.cipher_text.replace(" ", "")))
+    # f.write("\n")
     f.close()
+
+def getPlainText(key, cipher_text):
+    plain_text = ""
+    for i in range (0, len(cipher_text)):
+        if ord(key[i % len(key)]) <= ord(cipher_text[i]):
+            # print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A')), end="")
+            character = chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A'))
+            # plain_text += chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A'))
+        elif ord(key[i % len(key)]) > ord(cipher_text[i]):
+            # print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1), end="")
+            # plain_text += chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1)
+            character = chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('Z') +1)
+        # else:
+        #     print(chr(ord(cipher_text[i]) - ord(key[i % len(key)]) + ord('A')), end="")
+        if character.isalpha(): plain_text += character
+        else: return
+    return plain_text
 
 def decrypt(key, cipher_text):
     plain_text = ""
@@ -43,7 +63,7 @@ def decrypt(key, cipher_text):
             if letter >= len(frequency):
                 frequency.append([0 for i in range(26)])
             frequency[letter][ord(key[letter]) - ord('A')] += 1
-        printGuess()
+        printGuess(plain_text)
         # print(plain_text)
         # print(key)
 
@@ -68,7 +88,7 @@ def printAllKLengthRec(set, prefix, n, k):
     # Base case: k is 0,
     # print prefix
     if (k == 0) :
-        print(prefix)
+        # print(prefix)
         # if prefix == "ALICE":
         #     print("ALICE FOUND")
         #     decrypt(prefix, example.cipher_text.replace(" ", ""))
